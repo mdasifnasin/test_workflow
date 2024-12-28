@@ -1,0 +1,23 @@
+name: Exploring Metrix
+on: 
+  push:
+  workflow_dispatch:
+jobs:
+  Running-Docker_Images:
+    # concurrency: 
+    #     cancel-in-progress: false
+    #     group: "Prod Deployment"
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        os: [windows-latest]
+        images: [alpine,hello-world]
+    runs-on: ${{matrix.os}}
+    steps:
+        - name: Checking Docker Info on ${{matrix.os}}
+          run: docker info
+
+        - name: Running Docker Images on ${{matrix.os}}
+          timeout-minutes: 2
+          run: docker run ${{matrix.images}}
